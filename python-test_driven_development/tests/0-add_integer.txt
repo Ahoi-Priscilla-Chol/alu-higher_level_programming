@@ -51,3 +51,14 @@ Passing ``None`` for ``b``:
     >>> add_integer(1, None)
     Traceback (most recent call last):
     TypeError: b must be an integer
+Passing a float that overflows on integer conversion:
+
+    >>> add_integer(1, float('inf'))
+    Traceback (most recent call last):
+    OverflowError: cannot convert float infinity to integer
+
+Passing a float NaN, which cannot be converted to integer:
+
+    >>> add_integer(1, float('nan'))
+    Traceback (most recent call last):
+    ValueError: cannot convert float NaN to integer
