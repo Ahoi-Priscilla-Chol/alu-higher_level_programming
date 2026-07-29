@@ -1,8 +1,9 @@
 #!/usr/bin/python3
-"""Fetches https://alu-intranet.hbtn.io/status and displays the body."""
+"""Module that fetches the HBTN intranet status page and prints its body."""
 import urllib.request
 
-with urllib.request.urlopen("https://alu-intranet.hbtn.io/status") as response:
+
+with urllib.request.urlopen("https://intranet.hbtn.io/status") as response:
     body = response.read()
     print("Body response:")
     print("\t- type: {}".format(type(body)))
