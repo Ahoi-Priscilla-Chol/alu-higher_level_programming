@@ -53,3 +53,7 @@ Passing a div equal to zero:
     >>> matrix_divided([[1, 2], [3, 4]], 0)
     Traceback (most recent call last):
     ZeroDivisionError: division by zero
+Dividing a matrix of integers by infinity results in all zeros:
+
+    >>> matrix_divided([[1, 2, 3], [4, 5, 6]], float('inf'))
+    [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
