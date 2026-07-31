@@ -16,12 +16,16 @@ class TestBase(unittest.TestCase):
         b = Base(12)
         self.assertEqual(b.id, 12)
 
-    def test_id_none_generates_sequential(self):
-        """When id is None, ids increment automatically."""
+    def test_id_auto_assigned(self):
+        """When id is None, an id is assigned automatically."""
+        b = Base()
+        self.assertEqual(b.id, 1)
+
+    def test_id_increments_from_previous(self):
+        """A new object with no id gets the previous id + 1."""
         b1 = Base()
         b2 = Base()
-        self.assertEqual(b1.id, 1)
-        self.assertEqual(b2.id, 2)
+        self.assertEqual(b2.id, b1.id + 1)
 
     def test_id_zero(self):
         """An id of 0 is respected, not treated as None."""
