@@ -54,6 +54,7 @@ Passing None for size:
     >>> print_square(None)
     Traceback (most recent call last):
     TypeError: size must be an integer
+
 Calling with no arguments at all:
 
     >>> print_square()
