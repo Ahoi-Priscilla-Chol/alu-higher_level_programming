@@ -1,0 +1,47 @@
+The ``5-text_indentation`` module
+====================================
+
+Using ``text_indentation``
+----------------------------
+
+Import the function:
+
+    >>> text_indentation = __import__('5-text_indentation').text_indentation
+
+Printing a simple text with a period:
+
+    >>> text_indentation("Hello. How are you? Fine: thanks.")
+    Hello.
+    <BLANKLINE>
+    How are you?
+    <BLANKLINE>
+    Fine:
+    <BLANKLINE>
+    thanks.
+
+Printing an empty string prints nothing:
+
+    >>> text_indentation("")
+
+Printing a text with no punctuation prints it unchanged:
+
+    >>> text_indentation("Hello world")
+    Hello world
+
+Passing a non-string raises a TypeError:
+
+    >>> text_indentation(89)
+    Traceback (most recent call last):
+    TypeError: text must be a string
+
+Passing None raises a TypeError:
+
+    >>> text_indentation(None)
+    Traceback (most recent call last):
+    TypeError: text must be a string
+
+Passing a list raises a TypeError:
+
+    >>> text_indentation([1, 2, 3])
+    Traceback (most recent call last):
+    TypeError: text must be a string
