@@ -34,3 +34,9 @@ Passing a non-string last_name:
     >>> say_my_name("John", 12)
     Traceback (most recent call last):
     TypeError: last_name must be a string
+
+Calling with no arguments at all:
+
+    >>> say_my_name()
+    Traceback (most recent call last):
+    TypeError: say_my_name() missing 1 required positional argument: 'first_name'
