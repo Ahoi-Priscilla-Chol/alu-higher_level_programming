@@ -51,6 +51,7 @@ Passing ``None`` for ``b``:
     >>> add_integer(1, None)
     Traceback (most recent call last):
     TypeError: b must be an integer
+
 Passing a float that overflows on integer conversion:
 
     >>> add_integer(1, float('inf'))
