@@ -1,18 +1,24 @@
 #!/usr/bin/python3
-"""
-This module contains the Rectangle class.
-"""
+"""Defines the Rectangle class, inheriting from Base."""
 from models.base import Base
 
 
 class Rectangle(Base):
-    """
-    Rectangle class that inherits from Base.
-    """
+    """Represents a rectangle, inheriting from Base."""
 
     def __init__(self, width, height, x=0, y=0, id=None):
-        """
-        Initialize a new Rectangle instance.
+        """Initialize a new Rectangle instance.
+
+        Args:
+            width (int): The width of the new Rectangle.
+            height (int): The height of the new Rectangle.
+            x (int): The x coordinate of the new Rectangle.
+            y (int): The y coordinate of the new Rectangle.
+            id (int): The identity of the new Rectangle.
+
+        Raises:
+            TypeError: If any of width, height, x, or y is not an int.
+            ValueError: If width or height is <= 0, or if x or y is < 0.
         """
         super().__init__(id)
         self.width = width
@@ -22,12 +28,11 @@ class Rectangle(Base):
 
     @property
     def width(self):
-        """Get the width of the Rectangle."""
+        """int: The width of the Rectangle."""
         return self.__width
 
     @width.setter
     def width(self, value):
-        """Set the width of the Rectangle."""
         if type(value) is not int:
             raise TypeError("width must be an integer")
         if value <= 0:
@@ -36,12 +41,11 @@ class Rectangle(Base):
 
     @property
     def height(self):
-        """Get the height of the Rectangle."""
+        """int: The height of the Rectangle."""
         return self.__height
 
     @height.setter
     def height(self, value):
-        """Set the height of the Rectangle."""
         if type(value) is not int:
             raise TypeError("height must be an integer")
         if value <= 0:
@@ -50,12 +54,11 @@ class Rectangle(Base):
 
     @property
     def x(self):
-        """Get the x attribute of the Rectangle."""
+        """int: The x coordinate of the Rectangle."""
         return self.__x
 
     @x.setter
     def x(self, value):
-        """Set the x attribute of the Rectangle."""
         if type(value) is not int:
             raise TypeError("x must be an integer")
         if value < 0:
@@ -64,12 +67,11 @@ class Rectangle(Base):
 
     @property
     def y(self):
-        """Get the y attribute of the Rectangle."""
+        """int: The y coordinate of the Rectangle."""
         return self.__y
 
     @y.setter
     def y(self, value):
-        """Set the y attribute of the Rectangle."""
         if type(value) is not int:
             raise TypeError("y must be an integer")
         if value < 0:
@@ -81,11 +83,11 @@ class Rectangle(Base):
         return self.width * self.height
 
     def display(self):
-        """Print the Rectangle using the '#' character, with offsets."""
+        """Print the Rectangle using the `#` character, with respect
+        to `x` (spaces before) and `y` (blank lines above)."""
         print("\n" * self.y, end="")
-        for i in range(self.height):
-            print(" " * self.x, end="")
-            print("#" * self.width)
+        for _ in range(self.height):
+            print(" " * self.x + "#" * self.width)
 
     def __str__(self):
         """Return the string representation of the Rectangle."""
@@ -93,14 +95,19 @@ class Rectangle(Base):
             self.id, self.x, self.y, self.width, self.height)
 
     def update(self, *args, **kwargs):
-        """Update attributes using args (id, width, height, x, y order)
-        or kwargs (key/value pairs).
+        """Update attributes via *args or **kwargs.
+
+        Args:
+            *args (ints): New attribute values in the order:
+                id, width, height, x, y.
+            **kwargs (dict): New attribute values by key/value pair.
+                Ignored if *args is not empty.
         """
         if args:
             attrs = ["id", "width", "height", "x", "y"]
             for attr, value in zip(attrs, args):
                 setattr(self, attr, value)
-        elif kwargs:
+        else:
             for key, value in kwargs.items():
                 setattr(self, key, value)
 

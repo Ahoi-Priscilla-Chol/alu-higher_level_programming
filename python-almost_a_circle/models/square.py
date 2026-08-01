@@ -1,29 +1,29 @@
 #!/usr/bin/python3
-"""
-This module contains the Square class.
-"""
+"""Defines the Square class, inheriting from Rectangle."""
 from models.rectangle import Rectangle
 
 
 class Square(Rectangle):
-    """
-    Square class that inherits from Rectangle.
-    """
+    """Represents a square, inheriting from Rectangle."""
 
     def __init__(self, size, x=0, y=0, id=None):
-        """
-        Initialize a new Square instance.
+        """Initialize a new Square instance.
+
+        Args:
+            size (int): The size of the new Square.
+            x (int): The x coordinate of the new Square.
+            y (int): The y coordinate of the new Square.
+            id (int): The identity of the new Square.
         """
         super().__init__(size, size, x, y, id)
 
     @property
     def size(self):
-        """Get the size of the Square."""
+        """int: The size of the Square (alias for width/height)."""
         return self.width
 
     @size.setter
     def size(self, value):
-        """Set the size of the Square."""
         self.width = value
         self.height = value
 
@@ -33,14 +33,19 @@ class Square(Rectangle):
             self.id, self.x, self.y, self.width)
 
     def update(self, *args, **kwargs):
-        """Update attributes using args (id, size, x, y order)
-        or kwargs (key/value pairs).
+        """Update attributes via *args or **kwargs.
+
+        Args:
+            *args (ints): New attribute values in the order:
+                id, size, x, y.
+            **kwargs (dict): New attribute values by key/value pair.
+                Ignored if *args is not empty.
         """
         if args:
             attrs = ["id", "size", "x", "y"]
             for attr, value in zip(attrs, args):
                 setattr(self, attr, value)
-        elif kwargs:
+        else:
             for key, value in kwargs.items():
                 setattr(self, key, value)
 
