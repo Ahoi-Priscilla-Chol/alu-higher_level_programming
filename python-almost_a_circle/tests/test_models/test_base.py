@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Unittest for the Base class."""
+import json
 import unittest
 from models.base import Base
 
@@ -55,6 +56,40 @@ class TestBase(unittest.TestCase):
         instances = [Base() for _ in range(5)]
         ids = [inst.id for inst in instances]
         self.assertEqual(ids, [1, 2, 3, 4, 5])
+
+
+class TestBaseToJsonString(unittest.TestCase):
+    """Tests for the to_json_string static method."""
+
+    def test_none_returns_empty_brackets(self):
+        """Test None returns the string '[]'."""
+        self.assertEqual(Base.to_json_string(None), "[]")
+
+    def test_empty_list_returns_empty_brackets(self):
+        """Test an empty list returns the string '[]'."""
+        self.assertEqual(Base.to_json_string([]), "[]")
+
+    def test_return_type_is_str(self):
+        """Test the return type is a string."""
+        result = Base.to_json_string([{"id": 1}])
+        self.assertIsInstance(result, str)
+
+    def test_single_dictionary_content(self):
+        """Test the JSON content matches a single dictionary given."""
+        d = {"id": 1, "width": 10, "height": 7, "x": 2, "y": 8}
+        result = Base.to_json_string([d])
+        self.assertEqual(json.loads(result), [d])
+
+    def test_multiple_dictionaries_content(self):
+        """Test the JSON content matches multiple dictionaries given."""
+        d1 = {"id": 1, "width": 10, "height": 7, "x": 2, "y": 8}
+        d2 = {"id": 2, "width": 2, "height": 4, "x": 0, "y": 0}
+        result = Base.to_json_string([d1, d2])
+        self.assertEqual(json.loads(result), [d1, d2])
+
+    def test_callable_without_instance(self):
+        """Test the method is callable directly on the class."""
+        self.assertEqual(Base.to_json_string([]), "[]")
 
 
 if __name__ == "__main__":
