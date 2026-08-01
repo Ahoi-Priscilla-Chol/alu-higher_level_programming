@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Defines the Rectangle class, inheriting from Base."""
+import json
 from models.base import Base
 
 
@@ -120,3 +121,52 @@ class Rectangle(Base):
             "x": self.x,
             "y": self.y,
         }
+
+    @classmethod
+    def save_to_file(cls, list_objs):
+        """Write the JSON string representation of a list of objects
+        to a file named after the class (e.g. `Rectangle.json`).
+
+        Args:
+            list_objs (list): A list of instances that inherits
+                from Rectangle (or is a Rectangle), or None.
+        """
+        filename = "{}.json".format(cls.__name__)
+        if list_objs is None:
+            list_objs = []
+        list_dicts = [obj.to_dictionary() for obj in list_objs]
+        with open(filename, "w") as f:
+            f.write(json.dumps(list_dicts))
+
+    @classmethod
+    def load_from_file(cls):
+        """Return a list of instances loaded from a JSON file named
+        after the class (e.g. `Rectangle.json`).
+
+        Returns:
+            list: A list of instances of `cls`, or an empty list if
+                the file does not exist.
+        """
+        filename = "{}.json".format(cls.__name__)
+        try:
+            with open(filename, "r") as f:
+                list_dicts = json.loads(f.read())
+        except (FileNotFoundError, IOError):
+            return []
+        return [cls.create(**d) for d in list_dicts]
+
+    @classmethod
+    def create(cls, **dictionary):
+        """Return a new instance built from a dictionary of attributes.
+
+        Args:
+            **dictionary (dict): Key/value pairs of attributes to
+                initialize the new instance with.
+
+        Returns:
+            An instance of `cls` initialized with dummy required
+            attributes, then updated with `dictionary`.
+        """
+        dummy = cls(1, 1)
+        dummy.update(**dictionary)
+        return dummy

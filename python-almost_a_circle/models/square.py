@@ -57,3 +57,20 @@ class Square(Rectangle):
             "x": self.x,
             "y": self.y,
         }
+
+    @classmethod
+    def create(cls, **dictionary):
+        """Return a new Square instance built from a dictionary of
+        attributes.
+
+        Args:
+            **dictionary (dict): Key/value pairs of attributes to
+                initialize the new instance with.
+
+        Returns:
+            A Square instance initialized with a dummy size, then
+            updated with `dictionary`.
+        """
+        dummy = cls(1)
+        dummy.update(**dictionary)
+        return dummy

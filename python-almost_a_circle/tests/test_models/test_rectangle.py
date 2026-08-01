@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """Unittest for the Rectangle class."""
+import json
+import os
 import unittest
 from io import StringIO
 from unittest.mock import patch
@@ -340,6 +342,111 @@ class TestRectangleToDictionary(unittest.TestCase):
         d = r.to_dictionary()
         d["width"] = 999
         self.assertEqual(r.width, 10)
+
+
+class TestRectangleCreate(unittest.TestCase):
+    """Tests for the create classmethod."""
+
+    def test_create_returns_rectangle_instance(self):
+        """Test create returns an instance of Rectangle."""
+        r = Rectangle.create(id=89, width=1, height=2, x=3, y=4)
+        self.assertIsInstance(r, Rectangle)
+
+    def test_create_sets_all_attributes(self):
+        """Test create applies every given attribute."""
+        r = Rectangle.create(id=89, width=1, height=2, x=3, y=4)
+        self.assertEqual(
+            (r.id, r.width, r.height, r.x, r.y), (89, 1, 2, 3, 4))
+
+    def test_create_partial_dictionary(self):
+        """Test create works with only some attributes given."""
+        r = Rectangle.create(id=89)
+        self.assertEqual(r.id, 89)
+        self.assertEqual(r.width, 1)
+        self.assertEqual(r.height, 1)
+
+    def test_create_no_dictionary(self):
+        """Test create with no attributes returns a dummy rectangle."""
+        r = Rectangle.create()
+        self.assertEqual((r.width, r.height), (1, 1))
+
+
+class TestRectangleSaveToFile(unittest.TestCase):
+    """Tests for the save_to_file classmethod."""
+
+    def setUp(self):
+        """Reset the Base counter and remove any stray output file."""
+        Base._Base__nb_objects = 0
+        if os.path.exists("Rectangle.json"):
+            os.remove("Rectangle.json")
+
+    def tearDown(self):
+        """Remove the output file created by these tests, if any."""
+        if os.path.exists("Rectangle.json"):
+            os.remove("Rectangle.json")
+
+    def test_save_to_file_none_writes_empty_list(self):
+        """Test save_to_file(None) writes an empty JSON list."""
+        Rectangle.save_to_file(None)
+        with open("Rectangle.json", "r") as f:
+            self.assertEqual(f.read(), "[]")
+
+    def test_save_to_file_empty_list_writes_empty_list(self):
+        """Test save_to_file([]) writes an empty JSON list."""
+        Rectangle.save_to_file([])
+        with open("Rectangle.json", "r") as f:
+            self.assertEqual(f.read(), "[]")
+
+    def test_save_to_file_creates_file(self):
+        """Test save_to_file creates a file on disk."""
+        Rectangle.save_to_file([Rectangle(1, 2)])
+        self.assertTrue(os.path.exists("Rectangle.json"))
+
+    def test_save_to_file_content_matches(self):
+        """Test the JSON content matches the rectangles given."""
+        r1 = Rectangle(10, 7, 2, 8, 5)
+        r2 = Rectangle(2, 4, 0, 0, 6)
+        Rectangle.save_to_file([r1, r2])
+        with open("Rectangle.json", "r") as f:
+            list_dicts = json.loads(f.read())
+        self.assertEqual(
+            list_dicts, [r1.to_dictionary(), r2.to_dictionary()])
+
+
+class TestRectangleLoadFromFile(unittest.TestCase):
+    """Tests for the load_from_file classmethod."""
+
+    def setUp(self):
+        """Reset the Base counter and remove any stray output file."""
+        Base._Base__nb_objects = 0
+        if os.path.exists("Rectangle.json"):
+            os.remove("Rectangle.json")
+
+    def tearDown(self):
+        """Remove the output file created by these tests, if any."""
+        if os.path.exists("Rectangle.json"):
+            os.remove("Rectangle.json")
+
+    def test_load_from_file_no_file_returns_empty_list(self):
+        """Test load_from_file returns [] when no file exists."""
+        self.assertEqual(Rectangle.load_from_file(), [])
+
+    def test_load_from_file_round_trip(self):
+        """Test save then load returns equivalent rectangles."""
+        r1 = Rectangle(10, 7, 2, 8, 5)
+        r2 = Rectangle(2, 4, 0, 0, 6)
+        Rectangle.save_to_file([r1, r2])
+        loaded = Rectangle.load_from_file()
+        self.assertEqual(
+            [r.to_dictionary() for r in loaded],
+            [r1.to_dictionary(), r2.to_dictionary()])
+
+    def test_load_from_file_returns_rectangle_instances(self):
+        """Test loaded objects are instances of Rectangle."""
+        Rectangle.save_to_file([Rectangle(1, 1)])
+        loaded = Rectangle.load_from_file()
+        for obj in loaded:
+            self.assertIsInstance(obj, Rectangle)
 
 
 if __name__ == "__main__":
